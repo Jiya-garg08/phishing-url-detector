@@ -1,4 +1,4 @@
-**# Phishing URL Detector
+# Phishing URL Detector
 
 An AI-powered phishing URL detection system that combines **XGBoost machine learning, URL structural analysis, SHAP explainability, and live DNS/RDAP intelligence** with a React frontend and FastAPI backend.
 
