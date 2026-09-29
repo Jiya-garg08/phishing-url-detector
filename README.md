@@ -1,70 +1,83 @@
 # Phishing URL Detector
 
-An AI-powered phishing URL detection system that combines **XGBoost machine learning, URL structural analysis, SHAP explainability, and live DNS/RDAP intelligence** with a React frontend and FastAPI backend.
+An end-to-end machine learning system for detecting potentially phishing URLs using **XGBoost**, **URL and path-based feature engineering**, **SHAP explainability**, and **live DNS/RDAP domain intelligence**.
+
+The project includes a **FastAPI backend** and a **React frontend** for real-time URL analysis.
 
 ---
 
 ## Overview
 
-This project analyzes a URL and determines whether it is likely to be:
+Phishing attacks often use URLs that imitate legitimate websites or contain suspicious patterns designed to trick users.
 
-- **Phishing**
-- **Legitimate**
+This project analyzes a URL from two perspectives:
 
-Unlike a basic URL classifier, the system combines machine learning with additional domain intelligence and explainability.
+1. **Machine Learning Analysis**
+   - Extracts 21 URL and path-based features.
+   - Uses an XGBoost classifier to estimate phishing probability.
+   - Uses a calibrated classification threshold of `0.70`.
 
-The final system uses:
+2. **Live Domain Intelligence**
+   - Performs DNS resolution.
+   - Retrieves IP information.
+   - Checks DNS TTL and name servers.
+   - Uses RDAP to obtain domain registration information and estimate domain age.
 
-- **XGBoost** for phishing URL classification
-- **21 URL features** covering URL, hostname, path, and semantic path characteristics
-- **SHAP** for explaining individual predictions
-- **DNS intelligence** for live domain information
-- **RDAP** for domain registration information
-- **FastAPI** for the backend REST API
-- **React + Vite** for the frontend
-- **Tailwind CSS** for styling
-- **Framer Motion** for UI animations
-- **Lucide React** for interface icons
+The system then combines these results into an understandable security report.
 
 ---
 
-## Architecture
+## Key Features
+
+- XGBoost-based phishing URL classification
+- 21 URL and path-based features
+- Domain-separated train/test evaluation
+- Protection against registered-domain overlap between train and test data
+- Legitimate URL augmentation
+- SHAP-based prediction explanations
+- Live DNS intelligence
+- RDAP domain registration intelligence
+- Risk-level classification
+- FastAPI REST API
+- React frontend
+- Real-time URL analysis
+- Input validation and URL normalization
+- Human-readable explanations for model decisions
+
+---
+
+## System Architecture
 
 ```text
-                         User URL
-                            |
-                            v
-                  +-------------------+
-                  |   React Frontend  |
-                  |   URL Analyzer    |
-                  +---------+---------+
-                            |
-                       POST /analyze
-                            |
-                            v
-                  +-------------------+
-                  |    FastAPI API    |
-                  +---------+---------+
-                            |
-             +--------------+--------------+
-             |              |              |
-             v              v              v
-      URL Feature       XGBoost       DNS + RDAP
-       Extraction       Model         Intelligence
-             |              |              |
-             |              v              |
-             |        Prediction           |
-             |              |              |
-             +--------------+--------------+
-                            |
-                            v
-                    SHAP Explanation
-                            |
-                            v
-                    JSON API Response
-                            |
-                            v
-                  +-------------------+
-                  |   React Results   |
-                  |    Dashboard      |
-                  +-------------------+**
+                         User
+                          |
+                          v
+                 React Frontend
+                          |
+                          v
+                FastAPI REST API
+                          |
+             +------------+------------+
+             |                         |
+             v                         v
+      URL Feature Extraction     Live DNS + RDAP
+             |                         |
+             v                         v
+         XGBoost              Domain Intelligence
+             |
+             v
+        Phishing Probability
+             |
+             v
+        SHAP Explanation
+             |
+             +-------------+
+                           |
+                           v
+                  Risk Assessment
+                           |
+                           v
+                    JSON Response
+                           |
+                           v
+                    React Dashboard
