@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+pandas
+numpy
+joblib
+xgboost
+shap
+requests
+dnspython
+tldextract
