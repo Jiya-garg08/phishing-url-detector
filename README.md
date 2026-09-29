@@ -1,47 +1,70 @@
-# Phishing URL Detector
+**# Phishing URL Detector
 
-AI-powered phishing URL detection using XGBoost, SHAP, DNS and RDAP intelligence.
+An AI-powered phishing URL detection system that combines **XGBoost machine learning, URL structural analysis, SHAP explainability, and live DNS/RDAP intelligence** with a React frontend and FastAPI backend.
+
+---
 
 ## Overview
 
-This project detects whether a URL is likely to be **Phishing** or **Legitimate** using a machine learning model trained on URL-based features.
+This project analyzes a URL and determines whether it is likely to be:
 
-The system combines:
+- **Phishing**
+- **Legitimate**
+
+Unlike a basic URL classifier, the system combines machine learning with additional domain intelligence and explainability.
+
+The final system uses:
 
 - **XGBoost** for phishing URL classification
-- **SHAP** for explainable predictions
+- **21 URL features** covering URL, hostname, path, and semantic path characteristics
+- **SHAP** for explaining individual predictions
 - **DNS intelligence** for live domain information
 - **RDAP** for domain registration information
-- **FastAPI** for providing the prediction through a REST API
-
-The backend is designed so that any frontend technology such as Streamlit, React, HTML/CSS/JavaScript, or Django can consume the API.
+- **FastAPI** for the backend REST API
+- **React + Vite** for the frontend
+- **Tailwind CSS** for styling
+- **Framer Motion** for UI animations
+- **Lucide React** for interface icons
 
 ---
 
 ## Architecture
 
 ```text
-                    User URL
-                       |
-                       v
-              FastAPI Backend
-                       |
-          +------------+------------+
-          |                         |
-          v                         v
-   URL Feature Extraction     Live DNS + RDAP
-          |                         |
-          v                         v
-       XGBoost              Domain Intelligence
-          |
-          v
-        SHAP
-     Explanation
-          |
-          +------------+
-                       |
-                       v
-                JSON Response
-                       |
-                       v
-                       UI
+                         User URL
+                            |
+                            v
+                  +-------------------+
+                  |   React Frontend  |
+                  |   URL Analyzer    |
+                  +---------+---------+
+                            |
+                       POST /analyze
+                            |
+                            v
+                  +-------------------+
+                  |    FastAPI API    |
+                  +---------+---------+
+                            |
+             +--------------+--------------+
+             |              |              |
+             v              v              v
+      URL Feature       XGBoost       DNS + RDAP
+       Extraction       Model         Intelligence
+             |              |              |
+             |              v              |
+             |        Prediction           |
+             |              |              |
+             +--------------+--------------+
+                            |
+                            v
+                    SHAP Explanation
+                            |
+                            v
+                    JSON API Response
+                            |
+                            v
+                  +-------------------+
+                  |   React Results   |
+                  |    Dashboard      |
+                  +-------------------+**
